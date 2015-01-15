@@ -1,0 +1,56 @@
+@charset "utf-8";
+@import 'compass';
+$color-ameba: #31B404;
+$color-ameba-light: #61C434;
+$color-white: #fff;
+html,head,body,header,footer,div,span,h1,h2,h3,h4,p,ul,ol,li,table,tr,th,td{
+  margin: 0;
+  padding: 0;
+}
+html,body{
+  width: 100%;
+  height: 100%;
+}
+header,footer{
+	margin: 0 auto;
+	width: 320px;
+}
+table{
+	border-collapse: collapse;
+}
+#icon-list{
+	list-style: none;
+}
+#minesweeper{
+	margin: 0 auto;
+	width: 320px;
+	height: 320px;
+}
+td.cell{
+	background: $color-ameba;
+	border: solid 1px $color-ameba-light;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+
+	@include transition(background 0.1s linear);
+}
+td.normal{
+
+	&:not(.flag):hover{
+		background: $color-ameba-light;
+	}
+}
+td.opened{
+	background: white;
+}
+td.flag{
+	background: url(../../images/flag.png);
+	background-size: cover;
+
+}
+td.mine{
+	background: url(../../images/mine.png);
+	background-size: cover;
+}
