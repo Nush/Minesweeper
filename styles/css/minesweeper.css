@@ -1,4 +1,5 @@
-html, head, body, header, footer, div, span, h1, h2, h3, h4, p, ul, ol, li, table, tr, th, td {
+html, head, body, header, footer, div, span
+, h1, h2, h3, h4, p, ul, ol, li, table, tr, th, td {
   margin: 0;
   padding: 0;
 }
@@ -10,7 +11,7 @@ html, body {
 
 header, footer {
   margin: 0 auto;
-  width: 320px;
+  width: 480px;
 }
 
 table {
@@ -23,17 +24,22 @@ table {
 
 #minesweeper {
   margin: 0 auto;
-  width: 320px;
-  height: 320px;
+  width: 480px;
+  height: 480px;
+}
+
+#mine-table {
+  width: 480px;
+  margin: 0 auto;
+}
+#mine-table.gameover td.cell.normal {
+  background: #34495e !important;
 }
 
 td.cell {
   background: #31b404;
   border: solid 1px #61c434;
-  width: 30px;
-  height: 30px;
   text-align: center;
-  line-height: 30px;
   -webkit-transition: background 0.1s linear;
   -moz-transition: background 0.1s linear;
   -o-transition: background 0.1s linear;
