@@ -1,22 +1,42 @@
 "use strict";
-var MineSweeper = function($stage){
+var MineSweeper = function($table){
 	var stage = this;
-	this.$stage = $stage;
+	this.$table = $table;
 	this.mines = 0;
 	this.stageWidth = 0;
 	this.stageHeight = 0;
 
 	this.map = null;
+
+
+	this.GAMESTATUS = {
+		READY:0,
+		PLAY:1,
+		CLEAR:2,
+		GAMEOVER:3
+	};
+
+	this.game = this.GAMESTATUS.READY;
+
+	this.TABLE_SIZE = 480;
+
+	this.$table.removeClass('gameover');
+
 }
 MineSweeper.prototype = {
+	startGame: function(){
+		this.game = this.GAMESTATUS.PLAY;
+	},
 	createStage: function(numX,numY){
 		var cell = this;
 		this.stageWidth = numX;
 		this.stageHeight = numY;
 
+		console.log($('td.cell'));
+
 		console.log('ステージを作成します。');
 		this.map = [];
-		var $table = $('<table>');
+		this.$table.empty();
 		for(var y = 0 ; y < this.stageHeight; y++){
 			this.map[y] = [];
 			var $tr = $('<tr>');
@@ -32,16 +52,33 @@ MineSweeper.prototype = {
 				}).appendTo($tr);
 				this.map[y][x] = new MineCell($td);
 			}
-			$tr.appendTo($table);
+			$tr.appendTo(this.$table);
 		}
-		this.$stage.empty().append($table);
+
+		var size = 0;
+		if(this.stageWidth <= this.stageHeight){
+			size = this.TABLE_SIZE/this.stageHeight-2;
+			this.$table.width(this.TABLE_SIZE/this.stageHeight*this.stageWidth);
+		} else{
+			size = this.TABLE_SIZE/this.stageWidth-2;
+			this.$table.width(this.TABLE_SIZE);
+		}
+		$('td.cell')
+			.width(size)
+			.height(size)
+			.css('line-height',size+'px');
 	},
 	createStageWithMine: function(numX,numY,mines){
-		this.createStage();
+		this.createStage(numX,numY);
 		this.setMines(mines);
 	},
 	setMines: function(mines){
-		if((this.stageWidth*this.stageHeight) <= this.mines) { console.log('地雷の数が多すぎます'); return;}
+		if((this.stageWidth*this.stageHeight) <= mines) {
+			console.log('地雷の数が多すぎます');
+			$('#mine-table').empty();
+			delete this;
+			return;
+		}
 		console.log(mines+'個 のマインを設置します。');
 		this.mines = mines;
 
@@ -70,18 +107,28 @@ MineSweeper.prototype = {
 		this.map[posY][posX].toggleFlag();
 	},
 	clickCell: function(posY,posX){
+
+		if(this.game === this.GAMESTATUS.GAMEOVER || this.game === this.GAMESTATUS.CLEAR){
+			return;
+		}
+
 		if(this.map[posY][posX].getOnFlag()){
 			return;
 		}
 		if(this.map[posY][posX].getMine()){
 			console.log('ゲームオーバーです。');
+			alert('なんということでしょう。\nアメーバに侵食されました。。。');
 			this.map[posY][posX].hitMine();
+			this.game = this.GAMESTATUS.GAMEOVER;
+			this.$table.addClass('gameover');
 			return;
 		}
 		this.checkAroundCells(posY,posX);
 
 		if(this.isClear()){
 			console.log('クリアです！');
+			alert('クリアです');
+			return;
 		}
 	},
 	checkAroundCells: function(posY,posX){

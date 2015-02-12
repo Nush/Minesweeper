@@ -3,7 +3,10 @@
 $color-ameba: #31B404;
 $color-ameba-light: #61C434;
 $color-white: #fff;
-html,head,body,header,footer,div,span,h1,h2,h3,h4,p,ul,ol,li,table,tr,th,td{
+$color-dead: #34495e;
+$app-size: 480px;
+html,head,body,header,footer,div,span
+,h1,h2,h3,h4,p,ul,ol,li,table,tr,th,td{
   margin: 0;
   padding: 0;
 }
@@ -13,7 +16,7 @@ html,body{
 }
 header,footer{
 	margin: 0 auto;
-	width: 320px;
+	width: $app-size;
 }
 table{
 	border-collapse: collapse;
@@ -23,17 +26,23 @@ table{
 }
 #minesweeper{
 	margin: 0 auto;
-	width: 320px;
-	height: 320px;
+	width: $app-size;
+	height: $app-size;
+}
+#mine-table{
+	width: $app-size;
+	margin: 0 auto;
+	&.gameover{
+		td.cell.normal{
+			background: $color-dead !important;
+			// border: solid 1px $color-red !important;
+		}
+	}
 }
 td.cell{
 	background: $color-ameba;
 	border: solid 1px $color-ameba-light;
-	width: 30px;
-	height: 30px;
 	text-align: center;
-	line-height: 30px;
-
 	@include transition(background 0.1s linear);
 }
 td.normal{
